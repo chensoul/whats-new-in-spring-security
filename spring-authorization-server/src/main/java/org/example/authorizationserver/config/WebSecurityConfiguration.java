@@ -19,8 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
-import static org.springframework.security.config.annotation.web.configurers.WebauthnConfigurer.webauthn;
-
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfiguration {

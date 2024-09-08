@@ -30,11 +30,11 @@
           cd spring-security-webauthn
           ./gradlew publishToMavenLocal
         -->
-		<dependency>
+		<!--<dependency>
 			<groupId>io.github.rwinch.webauthn</groupId>
 			<artifactId>spring-security-webauthn</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
