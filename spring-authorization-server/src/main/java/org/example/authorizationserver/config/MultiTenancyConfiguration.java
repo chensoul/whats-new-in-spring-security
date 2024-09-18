@@ -44,8 +44,8 @@ public class MultiTenancyConfiguration {
 
         RegisteredClientRepository issuer1RegisteredClientRepository =
                 new InMemoryRegisteredClientRepository(
-                        RegisteredClient.withId("exchange-client")
-                                .clientId("exchange-client")
+                        RegisteredClient.withId("exchange")
+                                .clientId("exchange")
                                 .clientSecret("{noop}password")
                                 .clientAuthenticationMethods(m -> m.addAll(List.of(
                                         ClientAuthenticationMethod.NONE,
@@ -62,8 +62,8 @@ public class MultiTenancyConfiguration {
                                 )
                                 .tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED).build())
                                 .build(),
-                        RegisteredClient.withId("client-1")
-                                .clientId("client-1")
+                        RegisteredClient.withId("client1")
+                                .clientId("client1")
                                 .clientSecret("{noop}secret")
                                 .clientAuthenticationMethods(m -> m.addAll(List.of(
                                         ClientAuthenticationMethod.NONE,
@@ -71,7 +71,7 @@ public class MultiTenancyConfiguration {
                                 )
                                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                 .redirectUris(u -> u.addAll(REDIRECT_URIS))
-                                .scope("scope1")
+                                .scopes(s -> s.addAll(List.of("openid", "scope1")))
                                 .clientSettings(
                                         ClientSettings
                                                 .builder()
@@ -85,8 +85,8 @@ public class MultiTenancyConfiguration {
 
         RegisteredClientRepository issuer2RegisteredClientRepository =
                 new InMemoryRegisteredClientRepository(
-                        RegisteredClient.withId("client-2")
-                                .clientId("client-2")
+                        RegisteredClient.withId("client2")
+                                .clientId("client2")
                                 .clientSecret("{noop}secret")
                                 .clientAuthenticationMethods(m -> m.addAll(List.of(
                                         ClientAuthenticationMethod.NONE,
@@ -94,7 +94,7 @@ public class MultiTenancyConfiguration {
                                 )
                                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                 .redirectUris(u -> u.addAll(REDIRECT_URIS))
-                                .scope("scope2")
+                                .scopes(s -> s.addAll(List.of("openid", "scope2")))
                                 .clientSettings(
                                         ClientSettings
                                                 .builder()
@@ -102,7 +102,7 @@ public class MultiTenancyConfiguration {
                                                 .requireAuthorizationConsent(true)
                                                 .build()
                                 )
-                                .tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.REFERENCE).build())
+                                .tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED).build())
                                 .build()
                 );
 
