@@ -52,9 +52,9 @@ public class WebSecurityConfiguration {
     @Bean
     public UserDetailsService userDetailsService() {
         return new InMemoryUserDetailsManager(
-                new User(Set.of("USER"), "secret", "user", "Max", "Muster", "max.muster@example.com"),
-                new User(Set.of("USER", "ACCOUNTANT"), "secret", "accountant", "Andreas", "Accountant", "andreas.accountant@example.com"),
-                new User(Set.of("USER", "ADMIN"), "secret", "admin", "Andreas", "Admin", "andreas.admin@example.com")
+                new User(Set.of("USER"), passwordEncoder().encode("secret"), "user", "Max", "Muster", "max.muster@example.com"),
+                new User(Set.of("USER", "ACCOUNTANT"), passwordEncoder().encode("secret"), "accountant", "Andreas", "Accountant", "andreas.accountant@example.com"),
+                new User(Set.of("USER", "ADMIN"), passwordEncoder().encode("secret"), "admin", "Andreas", "Admin", "andreas.admin@example.com")
         );
     }
 

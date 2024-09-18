@@ -1,0 +1,10 @@
+### GET request to example server
+GET http://localhost:8080/api/accounts
+Authorization: Basic admin secret
+
+###
+GET http://localhost:8080/api/accounts/2
+Authorization: Basic accountant secret
+
+###
+GET http://localhost:8080/v3/api-docs
