@@ -14,17 +14,23 @@ import org.springframework.security.oauth2.server.authorization.client.InMemoryR
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.util.Assert;
 
 import java.util.List;
-
-import static java.util.UUID.randomUUID;
 
 @Configuration
 public class MultiTenancyConfiguration {
 
     public static final String ISSUER_1 = "issuer1";
     public static final String ISSUER_2 = "issuer2";
+    public static final List<String> REDIRECT_URIS = List.of(
+            "http://localhost:8080/login/oauth2/code/spring",
+            "http://127.0.0.1:8080/login/oauth2/code/spring",
+            "http://127.0.0.1:8080/callback",
+            "http://localhost:8080/callback");
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
@@ -37,22 +43,68 @@ public class MultiTenancyConfiguration {
     public RegisteredClientRepository registeredClientRepository(TenantPerIssuerComponentRegistry componentRegistry) {
 
         RegisteredClientRepository issuer1RegisteredClientRepository =
-                new InMemoryRegisteredClientRepository(RegisteredClient.withId(randomUUID().toString())
-                        .clientId("client-1")
-                        .clientSecret("{noop}secret")
-                        .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                        .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                        .scope("scope-1")
-                        .build());
+                new InMemoryRegisteredClientRepository(
+                        RegisteredClient.withId("exchange-client")
+                                .clientId("exchange-client")
+                                .clientSecret("{noop}password")
+                                .clientAuthenticationMethods(m -> m.addAll(List.of(
+                                        ClientAuthenticationMethod.NONE,
+                                        ClientAuthenticationMethod.CLIENT_SECRET_BASIC))
+                                )
+                                .authorizationGrantType(AuthorizationGrantType.TOKEN_EXCHANGE)
+                                .redirectUris(u -> u.addAll(REDIRECT_URIS))
+                                .scope("exchange")
+                                .clientSettings(
+                                        ClientSettings
+                                                .builder()
+                                                .requireAuthorizationConsent(true)
+                                                .build()
+                                )
+                                .tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED).build())
+                                .build(),
+                        RegisteredClient.withId("client-1")
+                                .clientId("client-1")
+                                .clientSecret("{noop}secret")
+                                .clientAuthenticationMethods(m -> m.addAll(List.of(
+                                        ClientAuthenticationMethod.NONE,
+                                        ClientAuthenticationMethod.CLIENT_SECRET_BASIC))
+                                )
+                                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                                .redirectUris(u -> u.addAll(REDIRECT_URIS))
+                                .scope("scope1")
+                                .clientSettings(
+                                        ClientSettings
+                                                .builder()
+                                                .requireProofKey(true)
+                                                .requireAuthorizationConsent(true)
+                                                .build()
+                                )
+                                .tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED).build())
+                                .build()
+                );
 
         RegisteredClientRepository issuer2RegisteredClientRepository =
-                new InMemoryRegisteredClientRepository(RegisteredClient.withId(randomUUID().toString())
-                        .clientId("client-2")
-                        .clientSecret("{noop}secret")
-                        .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                        .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                        .scope("scope-2")
-                        .build());
+                new InMemoryRegisteredClientRepository(
+                        RegisteredClient.withId("client-2")
+                                .clientId("client-2")
+                                .clientSecret("{noop}secret")
+                                .clientAuthenticationMethods(m -> m.addAll(List.of(
+                                        ClientAuthenticationMethod.NONE,
+                                        ClientAuthenticationMethod.CLIENT_SECRET_BASIC))
+                                )
+                                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                                .redirectUris(u -> u.addAll(REDIRECT_URIS))
+                                .scope("scope2")
+                                .clientSettings(
+                                        ClientSettings
+                                                .builder()
+                                                .requireProofKey(true)
+                                                .requireAuthorizationConsent(true)
+                                                .build()
+                                )
+                                .tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.REFERENCE).build())
+                                .build()
+                );
 
         componentRegistry.register(ISSUER_1, RegisteredClientRepository.class, issuer1RegisteredClientRepository);
         componentRegistry.register(ISSUER_2, RegisteredClientRepository.class, issuer2RegisteredClientRepository);
