@@ -33,7 +33,6 @@ public class BankAccountService {
         return bankAccountRepository.save(toSave);
     }
 
-
     @PreWriteBankAccount("#toUpdate")
     BankAccount update(BankAccount toUpdate) {
         return bankAccountRepository.save(toUpdate);
