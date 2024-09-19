@@ -46,6 +46,7 @@
         <module>how-spring-security-works</module>
         <module>spring-authorization-server</module>
         <module>latest-spring-security-features</module>
+        <module>passkeys-demo</module>
     </modules>
 
     <repositories>
