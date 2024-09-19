@@ -39,8 +39,7 @@ Now navigate your browser to https://server.local:8443.
 First, you need to log in with the user credentials `user/secret`.
 Now you should see a welcome page with the following links:
 
-* Register: Click on this link to register your user for a Passkey (using keychain on Mac, 1Password etc.)
-* Authenticate: This opens the login page
+* Register: Click on this link to register your user for a Passkey (using Keychain on Mac, Browser, 1Password etc.)
 * Hello: This calls a testing API that welcomes you as a user
 * Log Out: Force a logout, i.e. to test logging in using a passkey
 
