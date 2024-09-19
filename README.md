@@ -12,3 +12,7 @@ This repo contains demo code to show how spring security works behind the scenes
 * [Latest Spring Security Features](/latest-spring-security-features/README.md)
 * [Passkeys Demo](passkeys-demo/README.md)
 * [Spring Authorization Server](/spring-authorization-server/README.md)
+
+## Slides
+
+* [Slides (pdf)](whats_new_in_spring_security.pdf)
