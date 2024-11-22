@@ -13,7 +13,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.ott.GeneratedOneTimeTokenHandler;
 
 import java.util.Set;
 
@@ -38,14 +37,14 @@ public class WebSecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http, GeneratedOneTimeTokenHandler generatedOneTimeTokenHandler) throws Exception {
+    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
                         authorizeRequests ->
                                 authorizeRequests.anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
                 .formLogin(f -> f.defaultSuccessUrl("/api/accounts"))
-                .oneTimeTokenLogin(ot -> ot.generatedOneTimeTokenHandler(generatedOneTimeTokenHandler));
+                .oneTimeTokenLogin(withDefaults());
         return http.build();
     }
 

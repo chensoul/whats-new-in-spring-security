@@ -13,7 +13,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
-import static org.springframework.security.config.annotation.web.configurers.WebauthnConfigurer.webauthn;
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +29,7 @@ public class WebSecurityConfiguration {
                 .headers(headers -> headers.httpStrictTransportSecurity(HstsConfig::disable))
                 .httpBasic(withDefaults())
                 .formLogin(withDefaults())
-                .with(webauthn(), (passkeys) -> passkeys
+                .webAuthn((webAuthn) -> webAuthn
                         .rpName("Spring Security Relying Party")
                         .rpId("server.local")
                         .allowedOrigins("https://server.local:8443")
