@@ -1,7 +1,7 @@
-### GET request to user info
+### GET request for issuer1 to user info
 GET http://localhost:9000/issuer1/userinfo
 Authorization: Bearer {{$auth.token("issuer1")}}
 
-###
+### GET request for issuer2 to user info
 GET http://localhost:9000/issuer2/userinfo
 Authorization: Bearer {{$auth.token("issuer2")}}

@@ -27,8 +27,10 @@ public class WebSecurityConfiguration {
     @Order(1)
     SecurityFilterChain authServerFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults());
+
         http
                 .exceptionHandling((exceptions) -> exceptions
                         .defaultAuthenticationEntryPointFor(
@@ -48,12 +50,6 @@ public class WebSecurityConfiguration {
                 .authorizeHttpRequests((authorize) -> authorize
                         .anyRequest().authenticated()
                 )
-                // Passkeys Support
-                /*.with(webauthn(), c -> c
-                        .rpId("localhost")
-                        .rpName("my passkeys")
-                        .allowedOrigins("http://localhost:9000")
-                )*/
                 .formLogin(Customizer.withDefaults());
 
         return http.build();

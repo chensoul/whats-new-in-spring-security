@@ -42,6 +42,7 @@ class BankAccountServiceImplTest {
     @Test
     void findByAccountNumberWhenDeniedAccess() {
         login("andreas", "password");
+
         assertThatExceptionOfType(AccessDeniedException.class).isThrownBy(() -> bankAccountService.findByAccountNumber("1234"));
     }
 
